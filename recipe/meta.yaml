@@ -10,7 +10,7 @@ source:
   sha256: 50828ae9f523c8b2eeb546b38138b0d0882fcd3050e952d93a66a594ed178e72
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not linux]
   run_exports :
     - {{ pin_subpackage('cpptango', max_pin='x.x') }}
