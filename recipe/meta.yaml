@@ -12,7 +12,7 @@ source:
 build:
   number: 2
   skip: true  # [not linux]
-  run_exports :
+  run_exports:
     - {{ pin_subpackage('cpptango', max_pin='x.x') }}
 
 requirements:
@@ -37,6 +37,25 @@ test:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc
     - test -f ${PREFIX}/include/tango/tango.h
+
+outputs:
+  - name: cpptango
+    files:
+      - lib/libtango.so
+      - lib/libtango.so.9
+      - lib/libtango.so.{{ version }}
+      - lib/pkgconfig/tango.pc
+      - include/tango
+
+  - name: cpptango-dbg
+    requirements:
+      run:
+        - {{ pin_subpackage('cpptango', exact=True) }}
+    files:
+      - lib/libtango.so.{{ version }}.dbg
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.${PKG_VERSION}.dbg
 
 about:
   home: https://www.tango-controls.org
