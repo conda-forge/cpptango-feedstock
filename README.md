@@ -55,6 +55,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cpptango-green.svg)](https://anaconda.org/conda-forge/cpptango) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cpptango.svg)](https://anaconda.org/conda-forge/cpptango) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cpptango.svg)](https://anaconda.org/conda-forge/cpptango) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cpptango.svg)](https://anaconda.org/conda-forge/cpptango) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cpptango--dbg-green.svg)](https://anaconda.org/conda-forge/cpptango-dbg) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cpptango-dbg.svg)](https://anaconda.org/conda-forge/cpptango-dbg) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cpptango-dbg.svg)](https://anaconda.org/conda-forge/cpptango-dbg) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cpptango-dbg.svg)](https://anaconda.org/conda-forge/cpptango-dbg) |
 
 Installing cpptango
 ===================
@@ -65,10 +66,10 @@ Installing `cpptango` from the `conda-forge` channel can be achieved by adding `
 conda config --add channels conda-forge
 ```
 
-Once the `conda-forge` channel has been enabled, `cpptango` can be installed with:
+Once the `conda-forge` channel has been enabled, `cpptango, cpptango-dbg` can be installed with:
 
 ```
-conda install cpptango
+conda install cpptango cpptango-dbg
 ```
 
 It is possible to list all of the versions of `cpptango` available on your platform with:
