@@ -12,6 +12,10 @@ source:
 build:
   number: 2
   skip: true  # [not linux]
+  # Prevent libtango.so.{{ version }}.dbg to be modified
+  # Will raise CRC mismatch otherwise!
+  binary_relocation:
+    - lib/libtango.so.{{ version }}
   run_exports:
     - {{ pin_subpackage('cpptango', max_pin='x.x') }}
 
