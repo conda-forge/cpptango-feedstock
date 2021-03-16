@@ -10,9 +10,13 @@ source:
   sha256: 50828ae9f523c8b2eeb546b38138b0d0882fcd3050e952d93a66a594ed178e72
 
 build:
-  number: 2
+  number: 3
   skip: true  # [not linux]
-  run_exports :
+  # Prevent libtango.so.{{ version }}.dbg to be modified
+  # Will raise CRC mismatch otherwise!
+  binary_relocation:
+    - lib/libtango.so.{{ version }}
+  run_exports:
     - {{ pin_subpackage('cpptango', max_pin='x.x') }}
 
 requirements:
@@ -37,6 +41,25 @@ test:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc
     - test -f ${PREFIX}/include/tango/tango.h
+
+outputs:
+  - name: cpptango
+    files:
+      - lib/libtango.so
+      - lib/libtango.so.9
+      - lib/libtango.so.{{ version }}
+      - lib/pkgconfig/tango.pc
+      - include/tango
+
+  - name: cpptango-dbg
+    requirements:
+      run:
+        - {{ pin_subpackage('cpptango', exact=True) }}
+    files:
+      - lib/libtango.so.{{ version }}.dbg
+    test:
+      commands:
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.${PKG_VERSION}.dbg
 
 about:
   home: https://www.tango-controls.org
