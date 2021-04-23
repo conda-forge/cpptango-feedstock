@@ -22,5 +22,12 @@ if errorlevel 1 exit 1
 nmake
 if errorlevel 1 exit
 
+REM Save the current list of files in include directory
+python %RECIPE_DIR%\clean_dir.py save %LIBRARY_INC% include_files.txt
+
 nmake install
 if errorlevel 1 exit
+
+REM Remove previously saved files from include directories so they
+REM aren't saved in cpptango subpackage
+python %RECIPE_DIR%\clean_dir.py delete include_files.txt

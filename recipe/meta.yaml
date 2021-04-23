@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.3.5dev1" %}
+{% set version = "9.3.5.dev2" %}
 
 package:
   name: {{ name|lower }}
@@ -24,10 +24,12 @@ build:
 requirements:
   build:
     - cmake
-    - make        # [unix]
+    - make          # [unix]
     - {{ compiler('cxx') }}
-    - libtool     # [unix]
-    - pkg-config  # [unix]
+    - libtool       # [unix]
+    - pkg-config    # [unix]
+    # To run clean_dir.py
+    - python >=3.6  # [win]
   host:
     - omniorb
     - cppzmq
@@ -48,25 +50,29 @@ test:
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1       # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1  # [win]
 
-# debug information in separate subpackage for linux only
-outputs:                                                                 # [linux]
-  - name: cpptango                                                       # [linux]
-    files:                                                               # [linux]
-      - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.9                                                # [linux]
-      - lib/libtango.so.{{ version }}                                    # [linux]
-      - lib/pkgconfig/tango.pc                                           # [linux]
-      - include/tango                                                    # [linux]
+outputs:
+  - name: cpptango
+    files:
+      - lib/libtango.so                     # [linux]
+      - lib/libtango.so.9                   # [linux]
+      - lib/libtango.so.{{ version }}       # [linux]
+      - lib/pkgconfig/tango.pc              # [linux]
+      - include/tango                       # [linux]
+      - Library/bin/tango.dll               # [win]
+      - Library/lib/tango.lib               # [win]
+      - Library/include                     # [win]
 
-  - name: cpptango-dbg                                                   # [linux]
-    requirements:                                                        # [linux]
-      run:                                                               # [linux]
-        - {{ pin_subpackage('cpptango', exact=True) }}                   # [linux]
-    files:                                                               # [linux]
-      - lib/libtango.so.{{ version }}.dbg                                # [linux]
-    test:                                                                # [linux]
-      commands:                                                          # [linux]
+  - name: cpptango-dbg
+    requirements:
+      run:
+        - {{ pin_subpackage('cpptango', exact=True) }}
+    files:
+      - lib/libtango.so.{{ version }}.dbg  # [linux]
+      - Library/bin/tango.pdb              # [win]
+    test:
+      commands:
         - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.${PKG_VERSION}.dbg  # [linux]
+        - if not exist %LIBRARY_BIN%\\tango.pdb exit 1                   # [win]
 
 about:
   home: https://www.tango-controls.org
