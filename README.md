@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cpptango-feedst
 
 Summary: Tango-Controls C++ library
 
-Development: https://github.com/tango-controls/cppTango
+Development: https://gitlab.com/tango-controls/cppTango
 
 Documentation: https://tango-controls.github.io/cppTango-docs
 
@@ -41,6 +41,13 @@ Current build status
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cpptango-feedstock?branchName=master&jobName=linux&configuration=linux_64_" alt="variant">
                 </a>
               </td>
+            </tr><tr>
+              <td>win_64</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=11614&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cpptango-feedstock?branchName=master&jobName=win&configuration=win_64_" alt="variant">
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -64,6 +71,7 @@ Installing `cpptango` from the `conda-forge` channel can be achieved by adding `
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `cpptango, cpptango-dbg` can be installed with:
