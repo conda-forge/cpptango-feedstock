@@ -11,7 +11,7 @@ Summary: Tango-Controls C++ library
 
 Development: https://gitlab.com/tango-controls/cppTango
 
-Documentation: https://tango-controls.github.io/cppTango-docs
+Documentation: https://tango-controls.gitlab.io/cppTango/
 
 This is the Tango-Controls C++ library (a.k.a. cppTango).
 Tango-Controls is a software toolkit for building control systems.
