@@ -81,8 +81,8 @@ about:
    This is the Tango-Controls C++ library (a.k.a. cppTango).
    Tango-Controls is a software toolkit for building control systems.
   dev_url: https://gitlab.com/tango-controls/cppTango
-  doc_url: https://tango-controls.github.io/cppTango-docs
-  doc_source_url: https://github.com/tango-controls/cppTango-docs
+  doc_url: https://tango-controls.gitlab.io/cppTango/
+  doc_source_url: https://gitlab.com/tango-controls/cppTango
 
 extra:
   recipe-maintainers:
