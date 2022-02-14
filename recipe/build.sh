@@ -1,6 +1,6 @@
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug \
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_VERBOSE_MAKEFILE=ON \
       -DCMAKE_INSTALL_PREFIX=$PREFIX \
       -DCMAKE_INSTALL_LIBDIR=lib \
@@ -15,8 +15,12 @@ cmake -DCMAKE_BUILD_TYPE=Debug \
 make -j $CPU_COUNT
 make install
 
+# LIBVERSION can't be set to PKG_VERSION for dev and rc releases
+# LIBVERSION=${PKG_VERSION}
+LIBVERSION=9.3.5
+
 # Separate debugging symbols
-${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${PKG_VERSION} ${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg
-chmod 664 ${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg
-${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${PKG_VERSION}
-${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg ${PREFIX}/lib/libtango.so.${PKG_VERSION}
+${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${LIBVERSION} ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
+chmod 664 ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
+${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${LIBVERSION}
+${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg ${PREFIX}/lib/libtango.so.${LIBVERSION}
