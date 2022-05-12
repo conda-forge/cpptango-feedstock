@@ -1,0 +1,262 @@
+diff --git a/configure/CMakeLists.txt b/configure/CMakeLists.txt
+index 6a78a122..78ad2547 100644
+--- a/configure/CMakeLists.txt
++++ b/configure/CMakeLists.txt
+@@ -229,3 +229,7 @@ include(configure/coveralls.cmake)
+ 
+ option(TANGO_JPEG_MMX "Build MMX support" ON)
+ option(BUILD_SHARED_LIBS "Build a shared library instead of static" ON)
++
++configure_file(tango.pc.cmake tango.pc @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tango.pc"
++        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+diff --git a/configure/cmake_linux.cmake b/configure/cmake_linux.cmake
+index 4dc920cc..4b275eb1 100644
+--- a/configure/cmake_linux.cmake
++++ b/configure/cmake_linux.cmake
+@@ -16,15 +16,11 @@ if(BUILD_SHARED_LIBS)
+   set_target_properties(tango PROPERTIES
+                         VERSION ${LIBRARY_VERSION}
+                         SOVERSION ${SO_VERSION})
+-  install(TARGETS tango LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}")
++  install(TARGETS tango LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+ else()
+-  install(TARGETS tango ARCHIVE DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}")
++  install(TARGETS tango ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+ endif()
+ 
+-configure_file(tango.pc.cmake tango.pc @ONLY)
+-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tango.pc"
+-        DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
+-
+ #CPack
+ include(configure/cpack_linux.cmake)
+ 
+diff --git a/configure/cmake_win.cmake b/configure/cmake_win.cmake
+index 42d50d5f..da9e6331 100644
+--- a/configure/cmake_win.cmake
++++ b/configure/cmake_win.cmake
+@@ -87,14 +87,7 @@ install(DIRECTORY "$<TARGET_FILE_DIR:${TANGO_LIBRARY_NAME}>/"
+         DESTINATION bin COMPONENT dynamic
+         FILES_MATCHING PATTERN "*.pdb")
+ 
+-install(DIRECTORY log4tango/include/log4tango DESTINATION include COMPONENT headers FILES_MATCHING PATTERN "*.h" PATTERN "*.hh" PATTERN "*.tpp" PATTERN "*.txt" EXCLUDE PATTERN "*.vcproj" EXCLUDE PATTERN "*.cpp" EXCLUDE PATTERN "*.in" EXCLUDE PATTERN "*.am" EXCLUDE PATTERN "CMakeFiles" EXCLUDE PATTERN "threading" EXCLUDE)
+-install(DIRECTORY log4tango/include/log4tango/threading DESTINATION include/log4tango COMPONENT headers FILES_MATCHING PATTERN "*.h" PATTERN "*.hh" PATTERN "*.tpp" PATTERN "*.txt" EXCLUDE PATTERN "*.vcproj" EXCLUDE PATTERN "*.cpp" EXCLUDE PATTERN "*.in" EXCLUDE PATTERN "*.am" EXCLUDE PATTERN "CMakeFiles" EXCLUDE)
+-install(DIRECTORY cppapi/server/ DESTINATION include COMPONENT headers FILES_MATCHING PATTERN "*.h" PATTERN "*.hh" PATTERN "*.tpp" PATTERN "*.txt" EXCLUDE PATTERN "*.vcproj" EXCLUDE PATTERN "*.cmake" EXCLUDE PATTERN "*.cpp" EXCLUDE PATTERN "*.in" EXCLUDE PATTERN "*.am" EXCLUDE PATTERN "server_objects_sta.dir" EXCLUDE PATTERN "server_objects_dyn.dir" EXCLUDE PATTERN "CMakeFiles" EXCLUDE PATTERN "idl" EXCLUDE PATTERN "jpeg" EXCLUDE PATTERN "jpeg_mmx" EXCLUDE)
+-install(DIRECTORY cppapi/client/ DESTINATION include COMPONENT headers FILES_MATCHING PATTERN "*.h" PATTERN "*.hh" PATTERN "*.tpp" PATTERN "*.txt" EXCLUDE PATTERN "*.vcproj" EXCLUDE PATTERN "*.cmake" EXCLUDE PATTERN "*.cpp" EXCLUDE PATTERN "*.in" EXCLUDE PATTERN "*.am" EXCLUDE PATTERN "client_objects_sta.dir" EXCLUDE PATTERN "client_objects_dyn.dir" EXCLUDE PATTERN "CMakeFiles" EXCLUDE PATTERN "helpers" EXCLUDE)
+-install(DIRECTORY cppapi/client/helpers/ DESTINATION include COMPONENT headers FILES_MATCHING PATTERN "*.h" PATTERN "*.hh" PATTERN "*.tpp" PATTERN "*.txt" EXCLUDE PATTERN "*.vcproj" EXCLUDE PATTERN "*.cmake" EXCLUDE PATTERN "*.cpp" EXCLUDE PATTERN "*.in" EXCLUDE PATTERN "*.am" EXCLUDE PATTERN "CMakeFiles" EXCLUDE)
+-install(FILES cppapi/server/resource.h DESTINATION include COMPONENT headers)
+-install(FILES cppapi/server/tango.h DESTINATION include COMPONENT headers)
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cppapi/server/tango_const.h DESTINATION include COMPONENT headers)
++install(FILES cppapi/server/resource.h DESTINATION include/tango COMPONENT headers)
+ 
+ if (TANGO_INSTALL_DEPENDENCIES)
+     install(DIRECTORY ${OMNI_BASE}/include/COS DESTINATION include COMPONENT)
+@@ -259,8 +252,3 @@ if (TANGO_INSTALL_DEPENDENCIES)
+         install(FILES ${PTHREAD_WIN}/bin/pthreadVC2d.ilk DESTINATION bin COMPONENT dynamic)
+     endif(PTHREAD_WIN)
+ endif()
+-
+-configure_file(tango.pc.cmake tango.pc @ONLY)
+-
+-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tango.pc"
+-        DESTINATION include/pkgconfig COMPONENT headers)
+diff --git a/cppapi/CMakeLists.txt b/cppapi/CMakeLists.txt
+index aaaea6e9..77cc4afd 100644
+--- a/cppapi/CMakeLists.txt
++++ b/cppapi/CMakeLists.txt
+@@ -1,9 +1,3 @@
+ add_subdirectory(doxygen)
+ add_subdirectory(client)
+ add_subdirectory(server)
+-
+-
+-#link_libraries()
+-
+-#install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tango.pc"
+-#        DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/pkgconfig")
+\ No newline at end of file
+diff --git a/cppapi/client/CMakeLists.txt b/cppapi/client/CMakeLists.txt
+index 80ab49e3..36804ef6 100644
+--- a/cppapi/client/CMakeLists.txt
++++ b/cppapi/client/CMakeLists.txt
+@@ -74,4 +74,4 @@ else()
+         target_compile_definitions(client_objects PRIVATE _REENTRANT _TANGO_LIB)
+     endif()
+ endif()
+-install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango")
++install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/tango")
+diff --git a/cppapi/client/group.h b/cppapi/client/group.h
+index da088d4b..48e5ad8f 100644
+--- a/cppapi/client/group.h
++++ b/cppapi/client/group.h
+@@ -223,7 +223,7 @@ public:
+ protected:
+ ///@privatesection
+   //- exception flag (enable/disable)
+-  static bool exception_enabled;
++  TANGO_IMP static bool exception_enabled;
+   //- the device name
+   std::string dev_name_m;
+   //- command or attribute name
+diff --git a/cppapi/client/helpers/CMakeLists.txt b/cppapi/client/helpers/CMakeLists.txt
+index dd08a762..bbe8151d 100644
+--- a/cppapi/client/helpers/CMakeLists.txt
++++ b/cppapi/client/helpers/CMakeLists.txt
+@@ -3,4 +3,4 @@ set(HELPERS DeviceProxyHelper.h
+             TangoExceptionsHelper.h
+             Xstring.h)
+ 
+-install(FILES ${HELPERS} DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango")
+\ No newline at end of file
++install(FILES ${HELPERS} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/tango")
+diff --git a/cppapi/server/CMakeLists.txt b/cppapi/server/CMakeLists.txt
+index dcab3eec..7d43f7d2 100644
+--- a/cppapi/server/CMakeLists.txt
++++ b/cppapi/server/CMakeLists.txt
+@@ -162,5 +162,5 @@ endif(WIN32)
+ 
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/tango_const.h.in ${CMAKE_CURRENT_BINARY_DIR}/tango_const.h)
+ 
+-install(FILES ${HEADERS} DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango")
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/tango_const.h DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango")
++install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango)
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/tango_const.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango)
+diff --git a/cppapi/server/except.h b/cppapi/server/except.h
+index bc3c4155..5909de5e 100644
+--- a/cppapi/server/except.h
++++ b/cppapi/server/except.h
+@@ -35,8 +35,6 @@
+ 
+ #include <string>
+ 
+-#include <idl/tango.h>
+-
+ using namespace std;
+ 
+ 
+diff --git a/cppapi/server/idl/CMakeLists.txt b/cppapi/server/idl/CMakeLists.txt
+index 06829090..53b2f7fb 100644
+--- a/cppapi/server/idl/CMakeLists.txt
++++ b/cppapi/server/idl/CMakeLists.txt
+@@ -68,9 +68,9 @@ add_library(idl_objects OBJECT ${SOURCES} tango.h)
+ 
+ if(WIN32)
+     target_compile_definitions(idl_objects PRIVATE "${windows_defs};__x86__;__NT__;__OSVERSION__=4;__WIN32__;_WIN32_WINNT=0x0400;")
+-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tango.h" DESTINATION include/idl)
+ else()
+     target_compile_options(idl_objects PRIVATE -fPIC)
+     target_compile_definitions(idl_objects PRIVATE OMNI_UNLOADABLE_STUBS)
+-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/tango.h DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango/idl")
+ endif()
++
++install(FILES ${CMAKE_CURRENT_BINARY_DIR}/tango.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango/idl)
+diff --git a/cppapi/server/tango.h b/cppapi/server/tango.h
+index c016e385..ea3685b7 100644
+--- a/cppapi/server/tango.h
++++ b/cppapi/server/tango.h
+@@ -43,6 +43,7 @@
+ // Include IDL generated files which includes CORBA include files
+ //
+ 
++#define USE_stub_in_nt_dll
+ #include <idl/tango.h>
+ 
+ //
+diff --git a/cppapi/server/tango_const.h.in b/cppapi/server/tango_const.h.in
+index 7d8602c7..27ca0d9d 100644
+--- a/cppapi/server/tango_const.h.in
++++ b/cppapi/server/tango_const.h.in
+@@ -1219,31 +1219,31 @@ typedef struct _AttributeIdlData
+ template <typename T>
+ struct ranges_type2const
+ {
+-	static CmdArgType enu;
+-	static TANGO_CXX11_ABI string str;
++	TANGO_IMP static CmdArgType enu;
++	TANGO_IMP static TANGO_CXX11_ABI string str;
+ };
+ 
+ template <CmdArgType>
+ struct ranges_const2type
+ {
+-	static TANGO_CXX11_ABI string str;
++	TANGO_IMP static TANGO_CXX11_ABI string str;
+ };
+ 
+-#define RANGES_TYPE2CONST(type,constant) \
+-	template <> \
+-	struct ranges_type2const<type> \
+-	{ \
+-		static CmdArgType enu; \
+-		TANGO_CXX11_ABI static string str; \
+-	}; \
+-	CmdArgType ranges_type2const<type>::enu = constant; \
+-	TANGO_CXX11_ABI string ranges_type2const<type>::str = #type; \
+-	template<> \
+-	struct ranges_const2type<Tango::constant> \
+-	{ \
+-		typedef type Type; \
+-		TANGO_CXX11_ABI static string str; \
+-	}; \
++#define RANGES_TYPE2CONST(type,constant)                                  \
++	template <>                                                             \
++	struct ranges_type2const<type>                                          \
++	{                                                                       \
++		TANGO_IMP static CmdArgType enu;                                      \
++		TANGO_IMP TANGO_CXX11_ABI static string str;                          \
++	};                                                                      \
++	CmdArgType ranges_type2const<type>::enu = constant;                     \
++	TANGO_CXX11_ABI string ranges_type2const<type>::str = #type;            \
++	template<>                                                              \
++	struct ranges_const2type<Tango::constant>                               \
++	{                                                                       \
++		typedef type Type;                                                    \
++		TANGO_IMP TANGO_CXX11_ABI static string str;                          \
++	};                                                                      \
+ 	TANGO_CXX11_ABI string ranges_const2type<Tango::constant>::str = #type;
+ 
+ 
+diff --git a/cppapi/server/utils.h b/cppapi/server/utils.h
+index 753e62f6..a3b9454c 100644
+--- a/cppapi/server/utils.h
++++ b/cppapi/server/utils.h
+@@ -687,7 +687,7 @@ public:
+ /**
+  * The process trace level
+  */
+-	static int		_tracelevel;
++	TANGO_IMP	static int		_tracelevel;
+ /**
+  * The database use flag (Use with extreme care). Implemented for device
+  * server started without database usage.
+diff --git a/log4tango/include/log4tango/CMakeLists.txt b/log4tango/include/log4tango/CMakeLists.txt
+index 51230030..f80b97e1 100644
+--- a/log4tango/include/log4tango/CMakeLists.txt
++++ b/log4tango/include/log4tango/CMakeLists.txt
+@@ -24,6 +24,12 @@ set(HEADER_FILES
+ add_subdirectory(threading)
+ 
+ install(FILES ${HEADER_FILES}
+-        DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango/log4tango)
+-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango/log4tango)
+-#TODO if windows 32 install config-win32.h
++        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango/log4tango)
++
++if(WIN32)
++  install(FILES config-win32.h
++          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango/log4tango)
++else()
++  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h
++          DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango/log4tango)
++endif()
+diff --git a/log4tango/include/log4tango/threading/CMakeLists.txt b/log4tango/include/log4tango/threading/CMakeLists.txt
+index f8ece397..425ac2dd 100644
+--- a/log4tango/include/log4tango/threading/CMakeLists.txt
++++ b/log4tango/include/log4tango/threading/CMakeLists.txt
+@@ -5,4 +5,4 @@ set(HEADER_FILES
+                 Threading.hh)
+ 
+ install(FILES ${HEADER_FILES}
+-        DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/tango/log4tango/threading)
++        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/tango/log4tango/threading)

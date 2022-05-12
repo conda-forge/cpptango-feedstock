@@ -9,10 +9,11 @@ source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
   sha256: 7542cd898c67cfb077465b00303e00c93e9ecf7562d2e6fb5646bcff4cd5d11a
   patches:
+    - windows-compilation-mr924-mr944.patch
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [osx]
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
@@ -45,8 +46,8 @@ test:
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
-    - if not exist %LIBRARY_INC%\\idl\\tango.h exit 1         # [win]
-    - if not exist %LIBRARY_INC%\\pkgconfig\\tango.pc exit 1  # [win]
+    - if not exist %LIBRARY_INC%\\tango\\idl\\tango.h exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
 
 outputs:                                                                 # [linux]
   - name: cpptango                                                       # [linux]
