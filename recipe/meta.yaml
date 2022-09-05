@@ -1,6 +1,6 @@
 {% set name = "cppTango" %}
-{% set version = "9.3.5-rc1" %}
-{% set libversion = "9.3.5" %}
+{% set version = "9.4.0-rc1" %}
+{% set libversion = "9.4.0" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 6d163428e18494ed0faa57a528a8a23fc92807d8cd9e922bf91114d30866ffc4
+  sha256: 95d3f9829af2101067ab359e3e44d40b94a6a85b6560bc276f15eb330f3de0ad
   patches:
     - windows-lib-names.patch  # [win]
 
@@ -34,6 +34,10 @@ requirements:
     - cppzmq
     - zeromq
     - tango-idl
+    # Windows requires libjpeg-turbo to compile
+    # For Linux, we use jpeg to avoid conflicts with other packages used by taurus
+    - jpeg            # [unix]
+    - libjpeg-turbo   # [win]
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -45,32 +49,26 @@ test:
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
-    - if not exist %LIBRARY_INC%\\pkgconfig\\tango.pc exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
 
-outputs:
-  - name: cpptango
-    files:
-      - lib/libtango.so                     # [linux]
-      - lib/libtango.so.9                   # [linux]
-      - lib/libtango.so.{{ libversion }}    # [linux]
-      - lib/pkgconfig/tango.pc              # [linux]
-      - include/tango                       # [linux]
-      - Library/bin/tango.dll               # [win]
-      - Library/lib/tango.lib               # [win]
-      - Library/include/tango               # [win]
-      - Library/include/pkgconfig/tango.pc  # [win]
+outputs:                                                                 # [linux]
+  - name: cpptango                                                       # [linux]
+    files:                                                               # [linux]
+      - lib/libtango.so                                                  # [linux]
+      - lib/libtango.so.9                                                # [linux]
+      - lib/libtango.so.{{ libversion }}                                 # [linux]
+      - lib/pkgconfig/tango.pc                                           # [linux]
+      - include/tango                                                    # [linux]
 
-  - name: cpptango-dbg
-    requirements:
-      run:
-        - {{ pin_subpackage('cpptango', exact=True) }}
-    files:
-      - lib/libtango.so.{{ libversion }}.dbg  # [linux]
-      - Library/bin/tango.pdb                 # [win]
-    test:
-      commands:
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.3.5.dbg  # [linux]
-        - if not exist %LIBRARY_BIN%\\tango.pdb exit 1          # [win]
+  - name: cpptango-dbg                                                   # [linux]
+    requirements:                                                        # [linux]
+      run:                                                               # [linux]
+        - {{ pin_subpackage('cpptango', exact=True) }}                   # [linux]
+    files:                                                               # [linux]
+      - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
+    test:                                                                # [linux]
+      commands:                                                          # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.4.0.dbg           # [linux]
 
 about:
   home: https://www.tango-controls.org
