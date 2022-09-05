@@ -18,8 +18,11 @@ make install
 # LIBVERSION=${PKG_VERSION}
 LIBVERSION=9.4.0
 
-# Separate debugging symbols
-${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${LIBVERSION} ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
-chmod 664 ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
-${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${LIBVERSION}
-${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg ${PREFIX}/lib/libtango.so.${LIBVERSION}
+# Separate debugging symbols on Linux
+if [ ! -z "${OBJCOPY}" ]
+then
+  ${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${LIBVERSION} ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
+  chmod 664 ${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg
+  ${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${LIBVERSION}
+  ${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${LIBVERSION}.dbg ${PREFIX}/lib/libtango.so.${LIBVERSION}
+fi
