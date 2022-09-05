@@ -1,17 +1,23 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '10.9'
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge cpptango_rc
 cxx_compiler:
-- vs2019
-libjpeg_turbo:
-- '2'
+- clangxx
+cxx_compiler_version:
+- '14'
+jpeg:
+- '9'
+macos_machine:
+- x86_64-apple-darwin13.4.0
 pin_run_as_build:
-  libjpeg_turbo:
+  jpeg:
     max_pin: x
   zeromq:
-    max_pin: x.x.x
+    max_pin: x.x
 target_platform:
-- win-64
+- osx-64
 zeromq:
 - 4.3.4
