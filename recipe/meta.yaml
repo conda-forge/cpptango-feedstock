@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.4.0-rc2" %}
+{% set version = "9.4.0-rc3" %}
 {% set libversion = "9.4.0" %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 581a6582d235d736e5ae7b309d3b692676d5102ab16178a8a969c34ebf347f9b
+  sha256: d30a06f2d8a4705107239b6fb5513675f255105bf6f57489d9ab635548fbb822
   patches:
     - windows-lib-names.patch  # [win]
 
