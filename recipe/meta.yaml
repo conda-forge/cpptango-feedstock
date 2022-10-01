@@ -29,6 +29,9 @@ requirements:
     - pkg-config  # [unix]
   host:
     - omniorb
+    # Explicitely define omniorb-libs here even if omniorb depends on it
+    # otherwise it's not added in the run requirements on OSX (as specified in run_exports)
+    - omniorb-libs
     - cppzmq
     - zeromq
     - tango-idl
