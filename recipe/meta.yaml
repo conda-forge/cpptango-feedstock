@@ -6,13 +6,15 @@ package:
   version: {{ version }}
 
 source:
-  url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 6a6368564f7762881a0c5b4a2023c9af1a2872aa648d94a679b4e8789283a409
+  # url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
+  url: https://gitlab.com/tango-controls/cppTango/-/archive/9.4.0.windows0/cppTango-9.4.0.windows0.tar.gz
+  sha256: 919daf8da36e3860150226c449d793f84cfe832ca0f133b9359bf2090312ac91
   patches:
     - windows-lib-names.patch  # [win]
+    - windows-external-symbol.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
