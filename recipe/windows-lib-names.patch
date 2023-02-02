@@ -1,8 +1,8 @@
 diff --git a/configure/CMakeLists.txt b/configure/CMakeLists.txt
-index 130c1943..bb479dd1 100644
+index 4c0b77c2..4db03e7e 100644
 --- a/configure/CMakeLists.txt
 +++ b/configure/CMakeLists.txt
-@@ -79,15 +79,8 @@ if(TANGO_ZMQ_BASE)
+@@ -85,15 +85,8 @@ if(TANGO_ZMQ_BASE)
          link_directories(${TANGO_ZMQ_BASE}/lib/Release)
          link_directories(${TANGO_ZMQ_BASE}/bin/Debug)
          link_directories(${TANGO_ZMQ_BASE}/bin/Release)
@@ -20,7 +20,7 @@ index 130c1943..bb479dd1 100644
      else()
          set(ZMQ_PKG_LIBRARIES "-lzmq")
          link_directories(${TANGO_ZMQ_BASE}/lib)
-@@ -130,8 +123,8 @@ if(PTHREAD_WIN)
+@@ -139,8 +132,8 @@ if(PTHREAD_WIN)
          set(PTHREAD_WIN_PKG_LIBRARIES_DYN "pthreadVC2d.lib")
          set(PTHREAD_WIN_PKG_LIBRARIES_STA "pthreadVC2-sd.lib")
      else()
