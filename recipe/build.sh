@@ -1,3 +1,12 @@
+if [[ "$host_alias" != "$build_alias" ]]
+then
+  # We cannot use try_run when cross compiling, so we just say running the
+  # binary succeeded
+  ADDITIONAL_ARGS="-DOMNIIDL_TEST_RUN=0"
+else
+  ADDITIONAL_ARGS=""
+fi
+
 mkdir build
 cd build
 cmake ${CMAKE_ARGS} \
@@ -9,7 +18,7 @@ cmake ${CMAKE_ARGS} \
       -DTANGO_ZMQ_BASE="$PREFIX" \
       -DTANGO_JPEG_BASE="$PREFIX" \
       -DBUILD_TESTING=OFF \
-      ..
+      ${ADDITIONAL_ARGS} ..
 
 make -j $CPU_COUNT
 make install
