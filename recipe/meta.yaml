@@ -12,7 +12,7 @@ source:
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 1
+  number: 0
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
