@@ -1,6 +1,6 @@
 {% set name = "cppTango" %}
-{% set version = "9.4.0-rc3" %}
-{% set libversion = "9.4.0" %}
+{% set version = "9.3.6-rc2" %}
+{% set libversion = "9.3.6" %}
 
 package:
   name: {{ name|lower }}
@@ -8,12 +8,13 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d30a06f2d8a4705107239b6fb5513675f255105bf6f57489d9ab635548fbb822
+  sha256: 00cc2c9eace74689738c5606f22ceba6f3aec3a7e58293813e49650ebad6faee
   patches:
     - windows-lib-names.patch  # [win]
 
 build:
   number: 0
+  skip: true  # [osx]
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                    # [linux]
@@ -33,10 +34,6 @@ requirements:
     - cppzmq
     - zeromq
     - tango-idl
-    # Windows requires libjpeg-turbo to compile
-    # For Linux, we use jpeg to avoid conflicts with other packages used by taurus
-    - jpeg            # [unix]
-    - libjpeg-turbo   # [win]
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -54,7 +51,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.94                                               # [linux]
+      - lib/libtango.so.9                                                # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]

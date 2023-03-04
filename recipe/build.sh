@@ -3,11 +3,11 @@ cd build
 cmake ${CMAKE_ARGS} \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_VERBOSE_MAKEFILE=ON \
-      -DTANGO_CPPZMQ_BASE="$PREFIX" \
-      -DTANGO_IDL_BASE="$PREFIX" \
-      -DTANGO_OMNI_BASE="$PREFIX" \
-      -DTANGO_ZMQ_BASE="$PREFIX" \
-      -DTANGO_JPEG_BASE="$PREFIX" \
+      -DCPPZMQ_BASE="$PREFIX" \
+      -DIDL_BASE="$PREFIX" \
+      -DOMNI_BASE="$PREFIX" \
+      -DZMQ_BASE="$PREFIX" \
+      -DTANGO_JPEG_MMX=OFF \
       -DBUILD_TESTING=OFF \
       ..
 
@@ -16,7 +16,7 @@ make install
 
 # LIBVERSION can't be set to PKG_VERSION for dev and rc releases
 # LIBVERSION=${PKG_VERSION}
-LIBVERSION=9.4.0
+LIBVERSION=9.3.6
 
 # Separate debugging symbols on Linux
 if [ ! -z "${OBJCOPY}" ]
