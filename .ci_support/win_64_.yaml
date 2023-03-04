@@ -4,13 +4,6 @@ channel_targets:
 - conda-forge cpptango_rc
 cxx_compiler:
 - vs2019
-libjpeg_turbo:
-- '2'
-pin_run_as_build:
-  libjpeg_turbo:
-    max_pin: x
-  zeromq:
-    max_pin: x.x.x
 target_platform:
 - win-64
 zeromq:
