@@ -65,7 +65,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
     test:                                                                # [linux]
       commands:                                                          # [linux]
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.4.0.dbg           # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.3.6.dbg           # [linux]
 
 about:
   home: https://www.tango-controls.org
