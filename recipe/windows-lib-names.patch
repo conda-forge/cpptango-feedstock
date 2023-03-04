@@ -1,5 +1,5 @@
 diff --git a/configure/CMakeLists.txt b/configure/CMakeLists.txt
-index 6a78a122..9bfc45f7 100644
+index ca5a6d88..3b729a4b 100644
 --- a/configure/CMakeLists.txt
 +++ b/configure/CMakeLists.txt
 @@ -63,53 +63,8 @@ if(ZMQ_BASE)
