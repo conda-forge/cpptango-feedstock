@@ -12,7 +12,7 @@ source:
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
@@ -37,8 +37,8 @@ requirements:
     - zeromq
     - tango-idl
     # Windows requires libjpeg-turbo to compile
-    # For Linux, we use jpeg to avoid conflicts with other packages used by taurus
-    - jpeg            # [unix]
+    # For Linux, we use libjpeg-turbo  to avoid conflicts with other packages used by taurus
+    - libjpeg-turbo             # [unix]
     - libjpeg-turbo   # [win]
     - pthreads-win32  # [win]
   run:
