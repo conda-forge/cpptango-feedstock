@@ -1,11 +1,11 @@
-About cpptango
-==============
+About cpptango-feedstock
+========================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cpptango-feedstock/blob/main/LICENSE.txt)
 
 Home: https://www.tango-controls.org
 
 Package license: LGPL-3.0-or-later
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cpptango-feedstock/blob/main/LICENSE.txt)
 
 Summary: Tango-Controls C++ library
 
