@@ -36,10 +36,7 @@ requirements:
     - cppzmq
     - zeromq
     - tango-idl
-    # Windows requires libjpeg-turbo to compile
-    # For Linux, we use libjpeg-turbo  to avoid conflicts with other packages used by taurus
-    - libjpeg-turbo             # [unix]
-    - libjpeg-turbo   # [win]
+    - libjpeg-turbo
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
