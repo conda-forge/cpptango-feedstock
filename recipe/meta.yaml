@@ -30,6 +30,7 @@ requirements:
     - pkg-config  # [unix]
   host:
     - omniorb
+    - omniorb-libs
     - cppzmq
     - zeromq
     - tango-idl
