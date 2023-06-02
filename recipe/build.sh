@@ -1,3 +1,10 @@
+if [[ "$host_alias" != "$build_alias" ]]
+then
+  TANGO_OMNIIDL_PATH="${BUILD_PREFIX}/bin"
+else
+  TANGO_OMNIIDL_PATH="${PREFIX}/bin"
+fi
+
 mkdir build
 cd build
 cmake ${CMAKE_ARGS} \
@@ -6,6 +13,7 @@ cmake ${CMAKE_ARGS} \
       -DTANGO_CPPZMQ_BASE="$PREFIX" \
       -DTANGO_IDL_BASE="$PREFIX" \
       -DTANGO_OMNI_BASE="$PREFIX" \
+      -DTANGO_OMNIIDL_PATH="$TANGO_OMNIIDL_PATH" \
       -DTANGO_ZMQ_BASE="$PREFIX" \
       -DTANGO_JPEG_BASE="$PREFIX" \
       -DBUILD_TESTING=OFF \
@@ -16,7 +24,7 @@ make install
 
 # LIBVERSION can't be set to PKG_VERSION for dev and rc releases
 # LIBVERSION=${PKG_VERSION}
-LIBVERSION=9.4.0
+LIBVERSION=9.4.2
 
 # Separate debugging symbols on Linux
 if [ ! -z "${OBJCOPY}" ]

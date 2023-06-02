@@ -1,6 +1,6 @@
 {% set name = "cppTango" %}
-{% set version = "9.4.0-rc3" %}
-{% set libversion = "9.4.0" %}
+{% set version = "9.4.2-rc2" %}
+{% set libversion = "9.4.2" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: d30a06f2d8a4705107239b6fb5513675f255105bf6f57489d9ab635548fbb822
+  sha256: 9501f328168e26ffd8a36e60028a020a85be1bb5e6023f5838327cd5bd42293b
   patches:
     - windows-lib-names.patch  # [win]
 
@@ -28,15 +28,16 @@ requirements:
     - {{ compiler('cxx') }}
     - libtool     # [unix]
     - pkg-config  # [unix]
+    - omniorb     # [build_platform != target_platform]
   host:
-    - omniorb
+    - omniorb >=4.2.1,<4.3.0a0
+    # Explicitely define omniorb-libs here even if omniorb depends on it
+    # otherwise it's not added in the run requirements on OSX (as specified in run_exports)
+    - omniorb-libs
     - cppzmq
     - zeromq
     - tango-idl
-    # Windows requires libjpeg-turbo to compile
-    # For Linux, we use jpeg to avoid conflicts with other packages used by taurus
-    - jpeg            # [unix]
-    - libjpeg-turbo   # [win]
+    - libjpeg-turbo
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -46,8 +47,10 @@ test:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
+    - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
+    - if not exist %LIBRARY_INC%\\tango\\idl\\tango.h exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
 
 outputs:                                                                 # [linux]
@@ -67,7 +70,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
     test:                                                                # [linux]
       commands:                                                          # [linux]
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.4.0.dbg           # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.4.2.dbg           # [linux]
 
 about:
   home: https://www.tango-controls.org
