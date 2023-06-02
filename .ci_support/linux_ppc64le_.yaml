@@ -1,12 +1,18 @@
+cdt_name:
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge cpptango_rc
 cxx_compiler:
-- vs2019
+- gxx
+cxx_compiler_version:
+- '12'
+docker_image:
+- quay.io/condaforge/linux-anvil-ppc64le
 libjpeg_turbo:
 - '2'
 target_platform:
-- win-64
+- linux-ppc64le
 zeromq:
 - 4.3.4
