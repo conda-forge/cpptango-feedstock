@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.4.1" %}
+{% set version = "9.4.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 12f275fb5edc90a397655bec9a059215b5f7904c596c0f86270cbaa593de4f2a
+  sha256: a067ab969e5cd7abf01bd989e227904858b7a1c374c4ee115f313a9f9c4f114d
   patches:
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 3
+  number: 0
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
