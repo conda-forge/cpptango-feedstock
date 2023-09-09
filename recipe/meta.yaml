@@ -10,6 +10,7 @@ source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
   sha256: 96d2284929846f203baf70dad1e213b2853c945cfda444ec0482cc8f9aa44f6f
   patches:
+    - remove-dev-suffix.patch
     - windows-lib-names.patch  # [win]
 
 build:

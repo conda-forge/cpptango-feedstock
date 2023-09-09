@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f4f39fdf..8b4b60ff 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -90,7 +90,7 @@ if(EXISTS "${CMAKE_SOURCE_DIR}/.git" AND Git_FOUND)
+     endif()
+ else()
+     set(GIT_DESCRIBE_STDOUT "unknown")
+-    set(SUFFIX_VERSION "dev")
++    set(SUFFIX_VERSION "")
+ endif()
+ 
+ #convenient versions
