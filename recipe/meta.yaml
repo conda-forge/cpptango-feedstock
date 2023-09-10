@@ -15,7 +15,7 @@ source:
     - windows-fix-omniidl-check.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                    # [linux]
@@ -59,7 +59,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.94                                               # [linux]
+      - lib/libtango.so.95                                               # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
