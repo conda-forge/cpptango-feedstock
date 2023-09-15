@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.5.0-rc1" %}
+{% set version = "9.5.0-rc2" %}
 {% set libversion = "9.5.0" %}
 
 package:
@@ -8,14 +8,10 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 96d2284929846f203baf70dad1e213b2853c945cfda444ec0482cc8f9aa44f6f
-  patches:
-    - remove-dev-suffix.patch
-    - windows-lib-names.patch          # [win]
-    - windows-fix-omniidl-check.patch  # [win]
+  sha256: a0c55c518b5a4f60b3ee45d02a1f3d0b0caa1e23af19fd908edb81c5ff4e5bf1
 
 build:
-  number: 1
+  number: 0
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                    # [linux]
@@ -47,6 +43,7 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
+    - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.95           # [unix]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
