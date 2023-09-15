@@ -43,7 +43,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
-    - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.95           # [unix]
+    - test -f ${PREFIX}/lib/libtango.so.95                    # [linux]
+    - test -f ${PREFIX}/lib/libtango.95.dylib                 # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
