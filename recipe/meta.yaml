@@ -27,7 +27,7 @@ requirements:
     - {{ compiler('cxx') }}
     - libtool     # [unix]
     - pkg-config  # [unix]
-    - omniorb     # [build_platform != target_platform]
+    - omniorb >=4.2.1,<4.3.0a0  # [build_platform != target_platform]
   host:
     - omniorb >=4.2.1,<4.3.0a0
     # Explicitely define omniorb-libs here even if omniorb depends on it
