@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.5.0-rc3" %}
+{% set version = "9.5.0-rc4" %}
 {% set libversion = "9.5.0" %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: fb40f144f635e9a5595797cf62c4250cba04719c89aeb263170db62fd485b08e
+  sha256: 5048421553ceee386ab981efd5e29cf2cea484a9031e27a6ac2f2f9de265d72d
 
 build:
   number: 0
@@ -26,7 +26,7 @@ requirements:
     - {{ compiler('cxx') }}
     - libtool     # [unix]
     - pkg-config  # [unix]
-    - omniorb     # [build_platform != target_platform]
+    - omniorb >=4.3.0,<4.4.0a0  # [build_platform != target_platform]
   host:
     - omniorb >=4.3.0,<4.4.0a0
     # Explicitely define omniorb-libs here even if omniorb depends on it
