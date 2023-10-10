@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.4.2" %}
+{% set version = "9.5.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,10 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: a067ab969e5cd7abf01bd989e227904858b7a1c374c4ee115f313a9f9c4f114d
-  patches:
-    - windows-lib-names.patch  # [win]
+  sha256: 8f8cd49d5287f66f84088a1cf2fa427c98a4a567fb81cce8479e1b14c4307b16
 
 build:
-  number: 1
+  number: 0
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
@@ -27,9 +25,9 @@ requirements:
     - {{ compiler('cxx') }}
     - libtool     # [unix]
     - pkg-config  # [unix]
-    - omniorb >=4.2.1,<4.3.0a0  # [build_platform != target_platform]
+    - omniorb >=4.3.0,<4.4.0a0  # [build_platform != target_platform]
   host:
-    - omniorb >=4.2.1,<4.3.0a0
+    - omniorb >=4.3.0,<4.4.0a0
     # Explicitely define omniorb-libs here even if omniorb depends on it
     # otherwise it's not added in the run requirements on OSX (as specified in run_exports)
     - omniorb-libs
@@ -44,6 +42,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
+    - test -f ${PREFIX}/lib/libtango.so.95                    # [linux]
+    - test -f ${PREFIX}/lib/libtango.95.dylib                 # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
@@ -56,7 +56,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.94                                               # [linux]
+      - lib/libtango.so.95                                               # [linux]
       - lib/libtango.so.{{ version }}                                    # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
