@@ -15,4 +15,4 @@ libjpeg_turbo:
 target_platform:
 - linux-ppc64le
 zeromq:
-- 4.3.4
+- 4.3.5

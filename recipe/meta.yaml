@@ -8,9 +8,11 @@ package:
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
   sha256: 8f8cd49d5287f66f84088a1cf2fa427c98a4a567fb81cce8479e1b14c4307b16
+  patches:
+    - zeromq435-win.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
