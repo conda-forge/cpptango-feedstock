@@ -1,14 +1,14 @@
 {% set name = "cppTango" %}
-{% set version = "9.5.0-rc4" %}
-{% set libversion = "9.5.0" %}
+{% set version = "10.0.0-rc1" %}
+{% set libversion = "10.0.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version | replace("-", "") }}
 
 source:
-  url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 5048421553ceee386ab981efd5e29cf2cea484a9031e27a6ac2f2f9de265d72d
+  url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/cpptango-with-submodules-{{ version }}.tar.gz
+  sha256: 208779422c20f2f5d8d2847163b05579f48f92974b1fd795f9645320167e0882
 
 build:
   number: 0
@@ -24,7 +24,6 @@ requirements:
     - cmake
     - make        # [unix]
     - {{ compiler('cxx') }}
-    - libtool     # [unix]
     - pkg-config  # [unix]
     - omniorb >=4.3.0,<4.4.0a0  # [build_platform != target_platform]
   host:
@@ -36,6 +35,7 @@ requirements:
     - zeromq
     - tango-idl
     - libjpeg-turbo
+    - libopentelemetry-cpp
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -43,8 +43,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
-    - test -f ${PREFIX}/lib/libtango.so.95                    # [linux]
-    - test -f ${PREFIX}/lib/libtango.95.dylib                 # [osx]
+    - test -f ${PREFIX}/lib/libtango.so.10                    # [linux]
+    - test -f ${PREFIX}/lib/libtango.10.dylib                 # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
@@ -57,7 +57,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.95                                               # [linux]
+      - lib/libtango.so.10                                               # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
@@ -70,7 +70,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
     test:                                                                # [linux]
       commands:                                                          # [linux]
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.5.0.dbg           # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.10.0.0.dbg          # [linux]
 
 about:
   home: https://www.tango-controls.org
