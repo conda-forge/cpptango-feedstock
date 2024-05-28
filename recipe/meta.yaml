@@ -7,7 +7,8 @@ package:
   version: {{ version | replace("-", "") }}
 
 source:
-  url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/cpptango-with-submodules-{{ version }}.tar.gz
+  url: https://gitlab.com/tango-controls/cppTango/-/package_files/130355694/download
+  fn: cpptango-with-submodules-{{ version }}.tar.gz
   sha256: 208779422c20f2f5d8d2847163b05579f48f92974b1fd795f9645320167e0882
 
 build:
