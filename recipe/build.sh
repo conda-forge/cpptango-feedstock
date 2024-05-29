@@ -10,6 +10,7 @@ cd build
 cmake ${CMAKE_ARGS} \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_VERBOSE_MAKEFILE=ON \
+      -DTANGO_USE_TELEMETRY=ON \
       -DBUILD_TESTING=OFF \
       ..
 
@@ -18,7 +19,7 @@ make install
 
 # LIBVERSION can't be set to PKG_VERSION for dev and rc releases
 # LIBVERSION=${PKG_VERSION}
-LIBVERSION=9.5.0
+LIBVERSION=10.0.0
 
 # Separate debugging symbols on Linux
 if [ ! -z "${OBJCOPY}" ]
