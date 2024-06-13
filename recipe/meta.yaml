@@ -12,7 +12,7 @@ source:
   sha256: 208779422c20f2f5d8d2847163b05579f48f92974b1fd795f9645320167e0882
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                    # [linux]
@@ -37,7 +37,7 @@ requirements:
     - zeromq
     - tango-idl
     - libjpeg-turbo
-    - libopentelemetry-cpp
+    - libopentelemetry-cpp  # [unix]
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
