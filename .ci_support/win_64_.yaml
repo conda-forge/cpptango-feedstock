@@ -8,8 +8,6 @@ cxx_compiler:
 - vs2019
 libjpeg_turbo:
 - '3'
-libopentelemetry_cpp:
-- '1.15'
 target_platform:
 - win-64
 zeromq:
