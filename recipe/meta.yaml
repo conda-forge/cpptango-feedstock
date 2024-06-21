@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "10.0.0-rc1" %}
+{% set version = "10.0.0-rc2" %}
 {% set libversion = "10.0.0" %}
 
 package:
@@ -7,12 +7,12 @@ package:
   version: {{ version | replace("-", "") }}
 
 source:
-  url: https://gitlab.com/tango-controls/cppTango/-/package_files/130355694/download
+  url: https://gitlab.com/tango-controls/cppTango/-/package_files/134321869/download
   fn: cpptango-with-submodules-{{ version }}.tar.gz
-  sha256: 208779422c20f2f5d8d2847163b05579f48f92974b1fd795f9645320167e0882
+  sha256: 8bd6b5e655809f56bd96c4658025c9b3f3a5eb5aa9370cbf359afe46b7213aca
 
 build:
-  number: 1
+  number: 0
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                    # [linux]
@@ -45,8 +45,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
-    - test -f ${PREFIX}/lib/libtango.so.10                    # [linux]
-    - test -f ${PREFIX}/lib/libtango.10.dylib                 # [osx]
+    - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
+    - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
@@ -59,7 +59,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.10                                               # [linux]
+      - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
