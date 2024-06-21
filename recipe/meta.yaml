@@ -45,8 +45,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
-    - test -f ${PREFIX}/lib/libtango.so.10                    # [linux]
-    - test -f ${PREFIX}/lib/libtango.10.dylib                 # [osx]
+    - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
+    - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
@@ -59,7 +59,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.10                                               # [linux]
+      - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
