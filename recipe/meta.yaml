@@ -7,7 +7,7 @@ package:
   version: {{ version | replace("-", "") }}
 
 source:
-  url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/{{ name }}-with-submodules-{{ version }}.tar.gz
+  url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
   sha256: 0e28f7cb934a4cdb2bf5a16ba8c353b3405042fc5e39cbf823c1643605c48632
 
 build:
