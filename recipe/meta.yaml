@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "10.0.0-rc3" %}
+{% set version = "10.0.0-rc4" %}
 {% set libversion = "10.0.0" %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
-  sha256: 0e28f7cb934a4cdb2bf5a16ba8c353b3405042fc5e39cbf823c1643605c48632
+  sha256: b1484e757eede5e4eca1080fd28ed12503d348036581e195e717f0be74ca7054
 
 build:
   number: 0
