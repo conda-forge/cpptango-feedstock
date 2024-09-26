@@ -1,18 +1,16 @@
 {% set name = "cppTango" %}
-{% set version = "9.5.0" %}
+{% set version = "10.0.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 8f8cd49d5287f66f84088a1cf2fa427c98a4a567fb81cce8479e1b14c4307b16
-  patches:
-    - zeromq435-win.patch  # [win]
+  url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
+  sha256: 3749f2cb8d01df00939c26c071fd88d3f9731e6bdee0663ae6bcbdeb7ff178ad
 
 build:
-  number: 1
+  number: 0
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
@@ -24,8 +22,8 @@ requirements:
   build:
     - cmake
     - make        # [unix]
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
-    - libtool     # [unix]
     - pkg-config  # [unix]
     - omniorb >=4.3.0,<4.4.0a0  # [build_platform != target_platform]
   host:
@@ -37,6 +35,7 @@ requirements:
     - zeromq
     - tango-idl
     - libjpeg-turbo
+    - libopentelemetry-cpp  # [unix]
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -44,8 +43,8 @@ requirements:
 test:
   commands:
     - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}              # [unix]
-    - test -f ${PREFIX}/lib/libtango.so.95                    # [linux]
-    - test -f ${PREFIX}/lib/libtango.95.dylib                 # [osx]
+    - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
+    - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
@@ -58,7 +57,7 @@ outputs:                                                                 # [linu
   - name: cpptango                                                       # [linux]
     files:                                                               # [linux]
       - lib/libtango.so                                                  # [linux]
-      - lib/libtango.so.95                                               # [linux]
+      - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ version }}                                    # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
       - include/tango                                                    # [linux]
