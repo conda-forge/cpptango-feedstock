@@ -10,6 +10,7 @@ cd build
 cmake ${CMAKE_ARGS} \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_VERBOSE_MAKEFILE=ON \
+      -DTANGO_USE_TELEMETRY=ON \
       -DBUILD_TESTING=OFF \
       ..
 
