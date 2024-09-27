@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
-  sha256: 3749f2cb8d01df00939c26c071fd88d3f9731e6bdee0663ae6bcbdeb7ff178ad
+  sha256: b86a80da936a2c37a0b93da2c951fb501481ca04cd1717f53adcce24e3e87e2e
 
 build:
   number: 0
