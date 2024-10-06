@@ -1,6 +1,6 @@
 {% set name = "cppTango" %}
-{% set version = "9.3.6-rc2" %}
-{% set libversion = "9.3.6" %}
+{% set version = "9.3.7-rc1" %}
+{% set libversion = "9.3.7" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 00cc2c9eace74689738c5606f22ceba6f3aec3a7e58293813e49650ebad6faee
+  sha256: ba2576c030990249964153b77a0f87025fda456c30297b62807c74a6bfdc4e9c
   patches:
     - windows-lib-names.patch  # [win]
 
@@ -27,14 +27,14 @@ requirements:
     - cmake
     - make        # [unix]
     - {{ compiler('cxx') }}
-    - libtool     # [unix]
+    - {{ stdlib('c') }}
     - pkg-config  # [unix]
   host:
     - omniorb
     - omniorb-libs
     - cppzmq
     - zeromq
-    - tango-idl
+    - tango-idl <6.0
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
@@ -65,7 +65,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
     test:                                                                # [linux]
       commands:                                                          # [linux]
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.3.6.dbg           # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.9.3.7.dbg           # [linux]
 
 about:
   home: https://www.tango-controls.org
