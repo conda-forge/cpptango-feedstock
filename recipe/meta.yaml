@@ -34,7 +34,7 @@ requirements:
     - omniorb-libs
     - cppzmq
     - zeromq
-    - tango-idl =5.1.2
+    - tango-idl <6.0
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
