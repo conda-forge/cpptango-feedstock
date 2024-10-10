@@ -13,7 +13,7 @@ source:
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [osx]
   # Prevent libtango.so.{{ libversion }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
@@ -30,7 +30,7 @@ requirements:
     - {{ stdlib('c') }}
     - pkg-config  # [unix]
   host:
-    - omniorb
+    - omniorb >=4.2.0,<4.3.0a0
     - omniorb-libs
     - cppzmq
     - zeromq
