@@ -9,6 +9,8 @@ package:
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
   sha256: 2e403283214ae0e32f8e5c5d2690e40b1d3551d1a866b401c7ea8c96f748df1f
+  patches:
+    - better-opentelemetry-support.patch
 
 build:
   number: 0
