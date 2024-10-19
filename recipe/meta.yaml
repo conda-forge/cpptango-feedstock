@@ -8,9 +8,11 @@ package:
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
   sha256: b86a80da936a2c37a0b93da2c951fb501481ca04cd1717f53adcce24e3e87e2e
+  patches:
+    - better-opentelemetry-support.patch
 
 build:
-  number: 0
+  number: 1
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]

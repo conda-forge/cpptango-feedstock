@@ -1,0 +1,167 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4b4bd9d3..0d3acae6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,6 +14,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
+ 
+ include(CTest)
+ 
++set(CMAKE_TRY_COMPILE_CONFIGURATION "${CMAKE_BUILD_TYPE}")
++
+ option(TANGO_WARNINGS_AS_ERRORS "Treat compiler warnings as errors" OFF)
+ option(BUILD_SHARED_LIBS "Build a shared library instead of static" ON)
+ option(TANGO_USE_LIBCPP "Build against libc++" OFF)
+diff --git a/configure/CMakeLists.txt b/configure/CMakeLists.txt
+index 218a487f..1680641d 100644
+--- a/configure/CMakeLists.txt
++++ b/configure/CMakeLists.txt
+@@ -80,6 +80,8 @@ if (TANGO_USE_TELEMETRY)
+       message(FATAL_ERROR "The opentelemetry-cpp library was compiled without http support but TANGO_TELEMETRY_USE_HTTP is enabled.")
+     endif()
+ 
++    message(STATUS "opentelemetry-cpp: version ${OPENTELEMETRY_VERSION}")
++
+     if(WIN32)
+       find_package(CURL REQUIRED)
+       find_package(nlohmann_json REQUIRED)
+@@ -104,17 +106,7 @@ if (TANGO_USE_TELEMETRY)
+                     LINK_LIBRARIES opentelemetry-cpp::otlp_grpc_log_record_exporter)
+       endif()
+ 
+-      message(DEBUG "opentelemetry-cpp uses new exporter name: ${TANGO_TELEMETRY_EXPORTER_OPTION_NEW}")
+-    endif()
+-
+-    if(NOT DEFINED TANGO_TELEMETRY_ABSL_VARIANT)
+-      try_compile(TANGO_TELEMETRY_ABSL_VARIANT ${CMAKE_CURRENT_BINARY_DIR}/test_opentelemetry_absl_variant
+-                  SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/configure/test_opentelemetry_absl_variant.cpp
+-                  LINK_LIBRARIES opentelemetry-cpp::common)
+-    endif()
+-
+-    if(NOT TANGO_TELEMETRY_ABSL_VARIANT)
+-      message(FATAL_ERROR "opentelemetry-cpp must be compiled with -DCMAKE_CXX_STANDARD=17 -DWITH_STL=ON as cppTango needs std::variant and not opentelemetry::nostd::variant.")
++      message(STATUS "opentelemetry-cpp uses new exporter name: ${TANGO_TELEMETRY_EXPORTER_OPTION_NEW}")
+     endif()
+ 
+     if(NOT TANGO_TELEMETRY_USE_GRPC AND NOT TANGO_TELEMETRY_USE_HTTP)
+diff --git a/configure/check_omniidl.cmake b/configure/check_omniidl.cmake
+index 4ff95461..2c8cd7c0 100644
+--- a/configure/check_omniidl.cmake
++++ b/configure/check_omniidl.cmake
+@@ -19,10 +19,9 @@ function(test_omniidl)
+     if (WIN32)
+         if(TARGET omniORB4::omniORB4-static)
+           # Always statically link on Windows so we don't need the omniorb dll's to be in the PATH
+-          set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebug")
++          set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+           set(link_libs omniORB4::omniORB4-static;omniORB4::COS4-static;omniORB4::Dynamic4-static;ws2_32.lib)
+         else()
+-          set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
+           set(link_libs omniORB4::omniORB4;omniORB4::COS4;omniORB4::Dynamic4;ws2_32.lib)
+         endif()
+ 
+diff --git a/configure/test_opentelemetry_absl_variant.cpp b/configure/test_opentelemetry_absl_variant.cpp
+deleted file mode 100644
+index cc0fcd9b..00000000
+--- a/configure/test_opentelemetry_absl_variant.cpp
++++ /dev/null
+@@ -1,8 +0,0 @@
+-#include <opentelemetry/std/variant.h>
+-
+-#include <type_traits>
+-
+-int main(int, char **)
+-{
+-    static_assert(std::is_same_v<opentelemetry::nostd::variant<int>, std::variant<int>>);
+-}
+diff --git a/src/common/telemetry/telemetry.cpp b/src/common/telemetry/telemetry.cpp
+index eec10028..57457eea 100644
+--- a/src/common/telemetry/telemetry.cpp
++++ b/src/common/telemetry/telemetry.cpp
+@@ -45,6 +45,34 @@
+ #include <opentelemetry/exporters/otlp/otlp_grpc_log_record_exporter_factory.h>
+ #include <opentelemetry/exporters/otlp/otlp_http_log_record_exporter_factory.h>
+ 
++namespace
++{
++
++template <typename T>
++opentelemetry::nostd::shared_ptr<T> StdUniqueToNostdShared(std::unique_ptr<T> &&other)
++{
++    return opentelemetry::nostd::shared_ptr<T>{std::shared_ptr<T>{other.release()}};
++}
++
++} //  anonymous namespace
++
++namespace Tango::detail
++{
++
++/// @brief Helper template to check if the type T is one of the contained types in the variant U
++///
++/// @code
++/// static_assert(Tango::detail::is_one_of<bool, myVarientType, "Unsupported type");
++/// @endcode
++template <class T, class U>
++struct is_one_of;
++
++template <class T, class... Ts>
++struct is_one_of<T, opentelemetry::nostd::variant<Ts...>> : std::bool_constant<(std::is_same_v<T, Ts> || ...)>
++{
++};
++} // namespace Tango::detail
++
+ namespace Tango::telemetry
+ {
+ 
+@@ -531,7 +559,8 @@ class InterfaceImplementation final
+         auto resource = opentelemetry::sdk::resource::Resource::Create(resource_attributes);
+ 
+         TANGO_ASSERT(processor);
+-        provider = opentelemetry::sdk::trace::TracerProviderFactory::Create(std::move(processor), resource);
++        provider = StdUniqueToNostdShared(
++            opentelemetry::sdk::trace::TracerProviderFactory::Create(std::move(processor), resource));
+ 
+         tracer = provider->GetTracer(tracer_name, tracer_version);
+     }
+@@ -890,8 +919,8 @@ class Appender : public log4tango::Appender
+         auto resource = opentelemetry::sdk::resource::Resource::Create(resource_attributes);
+ 
+         TANGO_ASSERT(processor);
+-        interface->logger_provider =
+-            opentelemetry::sdk::logs::LoggerProviderFactory::Create(std::move(processor), resource);
++        interface->logger_provider = StdUniqueToNostdShared(
++            opentelemetry::sdk::logs::LoggerProviderFactory::Create(std::move(processor), resource));
+ 
+         // set the global logger provider
+         opentelemetry::logs::Provider::SetLoggerProvider(interface->logger_provider);
+diff --git a/src/include/tango/internal/utils.h b/src/include/tango/internal/utils.h
+index 18ccab2c..157ead4e 100644
+--- a/src/include/tango/internal/utils.h
++++ b/src/include/tango/internal/utils.h
+@@ -8,7 +8,6 @@
+ #include <string>
+ #include <string_view>
+ #include <type_traits>
+-#include <variant>
+ #include <vector>
+ 
+ namespace Tango::detail
+@@ -22,19 +21,6 @@ constexpr int INVALID_IDL_VERSION = 0;
+ /// devices with version 0 (which is not a valid IDL version).
+ bool IDLVersionIsTooOld(int version, int desiredVersion);
+ 
+-/// @brief Helper template to check if the type T is one of the contained types in the variant U
+-///
+-/// @code
+-/// static_assert(Tango::detail::is_one_of<bool, myVarientType, "Unsupported type");
+-/// @endcode
+-template <class T, class U>
+-struct is_one_of;
+-
+-template <class T, class... Ts>
+-struct is_one_of<T, std::variant<Ts...>> : std::bool_constant<(std::is_same_v<T, Ts> || ...)>
+-{
+-};
+-
+ template <typename T>
+ void stringify_vector(std::ostream &os, const std::vector<T> &vec, const std::string_view sep)
+ {
