@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "9.3.6" %}
+{% set version = "9.3.7" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/archive/{{ version }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 6c94a3b65c74e4ba1f30f906550e5721a09c1331d0a8787fecf846223cde1476
+  sha256: 0d97d43cdc9fb186f596d50ea89854aa963457c56fb915383bf7e6f11fc9a247
   patches:
     - windows-lib-names.patch  # [win]
 
 build:
-  number: 1
+  number: 0
   skip: true  # [osx]
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
@@ -26,14 +26,14 @@ requirements:
     - cmake
     - make        # [unix]
     - {{ compiler('cxx') }}
-    - libtool     # [unix]
+    - {{ stdlib('c') }}
     - pkg-config  # [unix]
   host:
     - omniorb >=4.2.1,<4.3.0a0
     - omniorb-libs
     - cppzmq
     - zeromq
-    - tango-idl
+    - tango-idl <6.0
     - pthreads-win32  # [win]
   run:
     - {{ pin_compatible('pthreads-win32', max_pin='x.x') }}  # [win]
