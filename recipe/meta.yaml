@@ -12,7 +12,7 @@ source:
     - better-opentelemetry-support.patch
 
 build:
-  number: 1
+  number: 2
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
