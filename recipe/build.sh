@@ -19,7 +19,7 @@ make install
 
 # LIBVERSION can't be set to PKG_VERSION for dev and rc releases
 # LIBVERSION=${PKG_VERSION}
-LIBVERSION=10.0.0
+LIBVERSION=10.0.1
 
 # Separate debugging symbols on Linux
 if [ ! -z "${OBJCOPY}" ]
