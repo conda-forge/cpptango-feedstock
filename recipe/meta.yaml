@@ -48,12 +48,14 @@ test:
     - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
     - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
+    - test -f ${PREFIX}/lib/cmake/tango/TangoConfig.cmake     # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
     - if not exist %LIBRARY_INC%\\tango\\idl\\tango.h exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\cmake\\tango\\TangoConfig.cmake exit 1  # [win]
 
 outputs:                                                                 # [linux]
   - name: cpptango                                                       # [linux]
@@ -62,6 +64,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ version }}                                    # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
+      - lib/cmake/tango                                                  # [linux]
       - include/tango                                                    # [linux]
 
   - name: cpptango-dbg                                                   # [linux]
