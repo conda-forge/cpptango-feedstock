@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "10.0.1-rc1" %}
+{% set version = "10.0.1-rc2" %}
 {% set libversion = "10.0.1" %}
 
 package:
@@ -8,9 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
-  sha256: 2e403283214ae0e32f8e5c5d2690e40b1d3551d1a866b401c7ea8c96f748df1f
-  patches:
-    - better-opentelemetry-support.patch
+  sha256: 465915b01e0575db2cfd21928b768dd09077bde9f64305e3095568f1310edfb0
 
 build:
   number: 0
@@ -49,12 +47,14 @@ test:
     - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
     - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
+    - test -f ${PREFIX}/lib/cmake/tango/TangoConfig.cmake     # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
     - if not exist %LIBRARY_INC%\\tango\\idl\\tango.h exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\cmake\\tango\\TangoConfig.cmake exit 1  # [win]
 
 outputs:                                                                 # [linux]
   - name: cpptango                                                       # [linux]
@@ -63,6 +63,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ libversion }}                                 # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
+      - lib/cmake/tango                                                  # [linux]
       - include/tango                                                    # [linux]
 
   - name: cpptango-dbg                                                   # [linux]
