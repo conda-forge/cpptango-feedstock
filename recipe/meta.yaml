@@ -1,5 +1,5 @@
 {% set name = "cppTango" %}
-{% set version = "10.0.0" %}
+{% set version = "10.0.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,10 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
-  sha256: b86a80da936a2c37a0b93da2c951fb501481ca04cd1717f53adcce24e3e87e2e
-  patches:
-    - better-opentelemetry-support.patch
+  sha256: db53d16f386a8397e18d325a3aaf6490e68968cbc6bdc39427f7d87c76949930
 
 build:
-  number: 2
+  number: 0
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
@@ -48,12 +46,14 @@ test:
     - test -f ${PREFIX}/lib/libtango.so.10.0                  # [linux]
     - test -f ${PREFIX}/lib/libtango.10.0.dylib               # [osx]
     - test -f ${PREFIX}/lib/pkgconfig/tango.pc                # [unix]
+    - test -f ${PREFIX}/lib/cmake/tango/TangoConfig.cmake     # [unix]
     - test -f ${PREFIX}/include/tango/tango.h                 # [unix]
     - test -f ${PREFIX}/include/tango/idl/tango.h             # [unix]
     - if not exist %LIBRARY_BIN%\\tango.dll exit 1            # [win]
     - if not exist %LIBRARY_INC%\\tango\\tango.h exit 1       # [win]
     - if not exist %LIBRARY_INC%\\tango\\idl\\tango.h exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\pkgconfig\\tango.pc exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\cmake\\tango\\TangoConfig.cmake exit 1  # [win]
 
 outputs:                                                                 # [linux]
   - name: cpptango                                                       # [linux]
@@ -62,6 +62,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.10.0                                             # [linux]
       - lib/libtango.so.{{ version }}                                    # [linux]
       - lib/pkgconfig/tango.pc                                           # [linux]
+      - lib/cmake/tango                                                  # [linux]
       - include/tango                                                    # [linux]
 
   - name: cpptango-dbg                                                   # [linux]
