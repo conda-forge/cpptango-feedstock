@@ -17,7 +17,7 @@ cxx_compiler_version:
 libjpeg_turbo:
 - '3'
 libopentelemetry_cpp:
-- '1.19'
+- '1.20'
 macos_machine:
 - x86_64-apple-darwin13.4.0
 target_platform:

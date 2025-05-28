@@ -10,7 +10,7 @@ source:
   sha256: db53d16f386a8397e18d325a3aaf6490e68968cbc6bdc39427f7d87c76949930
 
 build:
-  number: 1
+  number: 2
   # Prevent libtango.so.{{ version }}.dbg to be modified
   # Will raise CRC mismatch otherwise!
   binary_relocation:                 # [linux]
