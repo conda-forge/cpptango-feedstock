@@ -5,7 +5,7 @@ channel_sources:
 channel_targets:
 - conda-forge cpptango_rc
 cxx_compiler:
-- vs2019
+- vs2022
 libjpeg_turbo:
 - '3'
 target_platform:
