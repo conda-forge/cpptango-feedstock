@@ -1,6 +1,6 @@
 {% set name = "cppTango" %}
-{% set version = "10.1.0-rc2" %}
-{% set libversion = "10.1.0" %}
+{% set version = "10.1.1-rc1" %}
+{% set libversion = "10.1.1" %}
 
 package:
   name: {{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   url: https://gitlab.com/tango-controls/{{ name }}/-/releases/{{ version }}/downloads/{{ name }}-with-submodules-{{ version }}.tar.gz
-  sha256: 3b776f2a2780414732ba644016797a11127dacb990d8faa25be2ed72a659fbbe
+  sha256: 3db07dfdfb4ff212ecbe29d5a4364290b1654c210a1fce9aaf9e1b02a9147aef
 
 build:
   number: 0
@@ -74,7 +74,7 @@ outputs:                                                                 # [linu
       - lib/libtango.so.{{ libversion }}.dbg                             # [linux]
     test:                                                                # [linux]
       commands:                                                          # [linux]
-        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.10.1.0.dbg          # [linux]
+        - test -f ${PREFIX}/lib/libtango${SHLIB_EXT}.10.1.1.dbg          # [linux]
 
 about:
   home: https://www.tango-controls.org
