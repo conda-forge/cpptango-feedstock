@@ -1,0 +1,141 @@
+schema_version: 1
+
+context:
+  name: cppTango
+  version: "10.3.0"
+  soversion: "10.3"
+
+recipe:
+  name: cpptango-split
+  version: ${{ version }}
+
+source:
+  url: https://gitlab.com/tango-controls/${{ name }}/-/releases/${{ version }}/downloads/${{ name }}-with-submodules-${{ version }}.tar.gz
+  sha256: 0d6bf7fc700148c2bd177cd5055573d481e50c1311e57d9f08ec4d805d652bee
+
+build:
+  number: 3
+
+outputs:
+  - staging:
+      name: cpptango-build
+    requirements:
+      build:
+        - cmake
+        - ninja
+        - if: unix
+          then:
+            - pkg-config
+        - ${{ stdlib('c') }}
+        - ${{ compiler('cxx') }}
+        - if: build_platform != target_platform
+          then:
+            - omniorb >=4.3.0,<4.4.0a0
+      host:
+        - omniorb >=4.3.0,<4.4.0a0
+        # Keep this explicit even though omniorb depends on it so the
+        # runtime dependency is preserved on macOS through run_exports.
+        - omniorb-libs
+        - cppzmq
+        - zeromq
+        - tango-idl
+        - libjpeg-turbo
+        - if: unix
+          then:
+            - libopentelemetry-cpp
+        - if: win
+          then:
+            - pthreads-win32
+    build:
+      script:
+        file: build
+
+  - package:
+      name: cpptango
+    inherit: cpptango-build
+    build:
+      files:
+        - if: unix
+          then:
+            - lib/pkgconfig/tango.pc
+            - lib/cmake/tango/**
+            - include/tango/**
+        - if: linux
+          then:
+            - lib/libtango.so
+            - lib/libtango.so.${{ soversion }}
+            - lib/libtango.so.${{ version }}
+        - if: osx
+          then:
+            - lib/libtango*.dylib
+        - if: win
+          then:
+            - Library/bin/tango.dll
+            - Library/include/tango/**
+            - Library/lib/tango.lib
+            - Library/lib/pkgconfig/tango.pc
+            - Library/lib/cmake/tango/**
+      dynamic_linking:
+        # Prevent libtango.so.{{ version }}.dbg to be modified
+        # Will raise CRC mismatch otherwise!
+        binary_relocation:
+          - if: linux
+            then:
+              - lib/libtango.so.${{ version }}
+    requirements:
+      run:
+        - if: win
+          then:
+            - ${{ pin_compatible('pthreads-win32', upper_bound='x.x') }}
+      run_exports:
+        - ${{ pin_subpackage('cpptango', upper_bound='x.x') }}
+    tests:
+      - package_contents:
+          lib:
+            - tango
+          include:
+            - tango/tango.h
+            - tango/idl/tango.h
+          files:
+            - if: unix
+              then:
+                - lib/pkgconfig/tango.pc
+                - lib/cmake/tango/TangoConfig.cmake
+              else:
+                - Library/lib/pkgconfig/tango.pc
+                - Library/lib/cmake/tango/TangoConfig.cmake
+
+  - package:
+      name: cpptango-dbg
+    inherit:
+      from: cpptango-build
+      run_exports: false
+    build:
+      skip:
+        - not linux
+      files:
+        - lib/libtango.so.${{ version }}.dbg
+    requirements:
+      run:
+        - ${{ pin_subpackage('cpptango', exact=True) }}
+    tests:
+      - package_contents:
+          files:
+            - lib/libtango.so.${{ version }}.dbg
+
+about:
+  homepage: https://www.tango-controls.org
+  license: LGPL-3.0-or-later
+  license_file: LICENSE
+  summary: Tango-Controls C++ library
+  description: |
+    This is the Tango-Controls C++ library (a.k.a. cppTango).
+    Tango-Controls is a software toolkit for building control systems.
+  repository: https://gitlab.com/tango-controls/cppTango
+  documentation: https://tango-controls.gitlab.io/cppTango/
+
+extra:
+  feedstock-name: cpptango
+  recipe-maintainers:
+    - beenje
+    - bourtemb
