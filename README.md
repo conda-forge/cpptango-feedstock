@@ -3,7 +3,7 @@ About cpptango-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cpptango-feedstock/blob/main/LICENSE.txt)
 
-Home: https://www.tango-controls.org
+Home: https://www.tango-controls.org/
 
 Package license: LGPL-3.0-or-later
 
@@ -15,7 +15,6 @@ Documentation: https://tango-controls.gitlab.io/cppTango/
 
 This is the Tango-Controls C++ library (a.k.a. cppTango).
 Tango-Controls is a software toolkit for building control systems.
-
 
 Current build status
 ====================
@@ -46,13 +45,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=11614&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cpptango-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_ppc64le</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=11614&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cpptango-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_" alt="variant">
                 </a>
               </td>
             </tr><tr>
