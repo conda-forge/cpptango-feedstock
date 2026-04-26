@@ -1,6 +1,9 @@
 setlocal EnableDelayedExpansion
 
-cmake -G Ninja ^
+mkdir build
+cd build
+
+cmake -G "NMake Makefiles" ^
       -DCMAKE_BUILD_TYPE=Release ^
       -DBUILD_SHARED_LIBS=ON ^
       -DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
@@ -9,12 +12,11 @@ cmake -G Ninja ^
       -DTANGO_INSTALL_DEPENDENCIES=OFF ^
       -DCMAKE_CXX_FLAGS_RELEASE="/MD" ^
       -DCMAKE_CXX_FLAGS_DEBUG="/MDd" ^
-      -S . ^
-      -B build
+      ..
 if errorlevel 1 exit 1
 
-cmake --build build
+nmake
 if errorlevel 1 exit
 
-cmake --install build
+nmake install
 if errorlevel 1 exit
