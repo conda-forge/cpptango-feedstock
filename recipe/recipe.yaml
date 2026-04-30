@@ -43,9 +43,6 @@ outputs:
         - if: unix
           then:
             - libopentelemetry-cpp
-        - if: win
-          then:
-            - pthreads-win32
     build:
       script:
         file: build
@@ -83,10 +80,6 @@ outputs:
             then:
               - lib/libtango.so.${{ version }}
     requirements:
-      run:
-        - if: win
-          then:
-            - ${{ pin_compatible('pthreads-win32', upper_bound='x.x') }}
       run_exports:
         - ${{ pin_subpackage('cpptango', upper_bound='x.x') }}
     tests:
