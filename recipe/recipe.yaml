@@ -67,7 +67,7 @@ outputs:
             - lib/libtango*.dylib
         - if: win
           then:
-            - Library/bin/tango.dll
+            - Library/bin/tango.*
             - Library/include/tango/**
             - Library/lib/tango.lib
             - Library/lib/pkgconfig/tango.pc
@@ -97,6 +97,7 @@ outputs:
               else:
                 - Library/lib/pkgconfig/tango.pc
                 - Library/lib/cmake/tango/TangoConfig.cmake
+                - Library/bin/tango.pdb
 
   - package:
       name: cpptango-dbg
