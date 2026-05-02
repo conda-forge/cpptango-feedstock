@@ -45,6 +45,8 @@ outputs:
             - libopentelemetry-cpp
     build:
       script:
+        env:
+          CPPTANGO_VERSION: ${{ version }}
         file: build
 
   - package:

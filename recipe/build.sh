@@ -20,8 +20,8 @@ cmake --install build
 # Separate debugging symbols on Linux
 if [ ! -z "${OBJCOPY}" ]
 then
-  ${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${PKG_VERSION} ${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg
-  chmod 664 ${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg
-  ${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${PKG_VERSION}
-  ${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${PKG_VERSION}.dbg ${PREFIX}/lib/libtango.so.${PKG_VERSION}
+  ${OBJCOPY} --only-keep-debug ${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION} ${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION}.dbg
+  chmod 664 ${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION}.dbg
+  ${OBJCOPY} --strip-debug ${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION}
+  ${OBJCOPY} --add-gnu-debuglink=${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION}.dbg ${PREFIX}/lib/libtango.so.${CPPTANGO_VERSION}
 fi
