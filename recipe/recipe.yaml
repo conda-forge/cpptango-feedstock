@@ -74,13 +74,6 @@ outputs:
             - Library/lib/tango.lib
             - Library/lib/pkgconfig/tango.pc
             - Library/lib/cmake/tango/**
-      dynamic_linking:
-        # Prevent libtango.so.{{ version }}.dbg to be modified
-        # Will raise CRC mismatch otherwise!
-        binary_relocation:
-          - if: linux
-            then:
-              - lib/libtango.so.${{ version }}
     requirements:
       run_exports:
         - ${{ pin_subpackage('cpptango', upper_bound='x.x') }}
@@ -109,6 +102,10 @@ outputs:
     build:
       skip:
         - not linux
+      dynamic_linking:
+        # Prevent dbg file to be modified
+        # Will raise CRC mismatch otherwise!
+        binary_relocation: false
       files:
         - lib/libtango.so.${{ version }}.dbg
     requirements:
