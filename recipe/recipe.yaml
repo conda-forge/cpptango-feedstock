@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: cppTango
-  version: "10.3.0"
+  version: "10.3.1"
   soversion: "10.3"
 
 recipe:
@@ -11,10 +11,10 @@ recipe:
 
 source:
   url: https://gitlab.com/tango-controls/${{ name }}/-/releases/${{ version }}/downloads/${{ name }}-with-submodules-${{ version }}.tar.gz
-  sha256: 0d6bf7fc700148c2bd177cd5055573d481e50c1311e57d9f08ec4d805d652bee
+  sha256: 8c6c733c8d694073ce711178489dfc12764ad054dd29c452ebf5b8d4776b3ff5
 
 build:
-  number: 3
+  number: 0
 
 outputs:
   - staging:
