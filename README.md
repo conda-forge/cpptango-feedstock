@@ -200,4 +200,5 @@ Feedstock Maintainers
 
 * [@beenje](https://github.com/beenje/)
 * [@bourtemb](https://github.com/bourtemb/)
+* [@yamatveev](https://github.com/yamatveev/)
 
