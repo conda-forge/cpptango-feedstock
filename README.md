@@ -202,6 +202,3 @@ Feedstock Maintainers
 * [@bourtemb](https://github.com/bourtemb/)
 * [@yamatveev](https://github.com/yamatveev/)
 
-
-<!-- dummy commit to enable rerendering -->
-
